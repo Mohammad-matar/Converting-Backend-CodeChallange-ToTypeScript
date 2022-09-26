@@ -3,6 +3,15 @@ import http from "http";
 import express, { Express, NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import routes from "./routes/posts";
+import mongoose from "mongoose";
+import "dotenv/config";
+
+mongoose
+  .connect(`${process.env.DB_CONN_STRING}`)
+  .then(() => {
+    console.log("Connected Successfully to the Database");
+  })
+  .catch(console.error);
 
 const router: Express = express();
 
