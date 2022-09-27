@@ -2,10 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import express, { Request, Response, NextFunction, response } from "express";
 import { isVariableDeclaration } from "typescript";
 import getUsers from "../middleware/phone-number-validate";
-// import { getAllJSDocTags } from "typescript";
-// import axios, { AxiosResponse } from "axios";
-// import jQueryStatic from "jquery";
-// import { userInfo } from "os";
+
 import User from "../Models/User";
 
 interface Post {
@@ -69,12 +66,6 @@ const addPost = async (req: Request, res: Response) => {
       });
       return response;
     }
-    // let post: Post = result.data;
-    // return res.status(200).json({
-    //     message: post
-    // });
-
-    // res.status(201).json(newUser);
   } catch (error) {
     // res.status(500).send(error);
     if (axios.isAxiosError(error)) {
@@ -88,67 +79,9 @@ const addPost = async (req: Request, res: Response) => {
   }
 };
 
-// type CreateUserResponse = {
-//   name: string;
-//   address: string;
-//   phoneNumber: number;
-//   id: string;
-//   createdAt: string;
-// };
-
-// async function addPost() {
-//   try {
-//     // 👇️ const data: CreateUserResponse
-//     const { data } = await axios.post<CreateUserResponse>(
-//       "https://reqres.in/api/users",
-//       { name: "John Smith", job: "manager", phoneNumber: 71728733 },
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//           Accept: "application/json",
-//         },
-//       }
-//     );
-
-//     // console.log(JSON.stringify(data, null, 4));
-
-//     return data;
-//   } catch (error) {
-//     if (axios.isAxiosError(error)) {
-//       console.log("error message: ", error.message);
-//       // 👇️ error: AxiosError<any, any>
-//       return error.message;
-//     } else {
-//       console.log("unexpected error: ", error);
-//       return "An unexpected error occurred";
-//     }
-//   }
-// }
-// addPost();
 
 // updating a post
 const updatePost = async (req: Request, res: Response, next: NextFunction) => {
-  // // get the post id from the req.params
-  // let id: string = req.params.id;
-  // get the data from req.body
-  // let title: string = req.body.title ?? null;
-  // let name: string = req.body.name ?? null;
-  // let address: string = req.body.address ?? null;
-  // let phoneNumber: string = req.body.phoneNumber ?? null;
-  // // update the post
-  // let response: AxiosResponse = await axios.put(
-  //   `https://jsonplaceholder.typicode.com/posts/${id}`,
-  // {
-  //   ...(title && { title }),
-  //   ...(body && { body }),
-  //   ...(address && { address }),
-  //   ...(phoneNumber && { phoneNumber }),
-  // }
-  // );
-  // // return response
-  // return res.status(200).json({
-  //   message: response.data,
-  // });
   const id: number = parseInt(req.params.id);
   try {
     const UpdateUser: string = req.body;
