@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import express, { Request, Response, NextFunction, response } from "express";
 import { isVariableDeclaration } from "typescript";
 import getUsers from "../middleware/phone-number-validate";
@@ -33,44 +33,6 @@ const getPosts = async (req: Request, res: Response, next: NextFunction) => {
     data: users,
   });
 };
-// type ValidateNumber = {
-//   name: string;
-//   Address: string;
-//   phoneNumber: number;
-//   id: string;
-//   createdAt: string;
-// };
-
-// async function getPosts() {
-//   try {
-//     // 👇️ const data: CreateUserResponse
-//     const { data } = await axios.post<ValidateNumber>(
-//       "https://reqres.in/api/users",
-//       { name: "John Smith", job: "manager", phoneNumber: "+961728733" },
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//           Accept: "application/json",
-//         },
-//       }
-//     );
-
-//     // console.log(JSON.stringify(data, null, 4));
-
-//     return data;
-//   } catch (error) {
-//     if (axios.isAxiosError(error)) {
-//       console.log("error message: ", error.message);
-//       // 👇️ error: AxiosError<any, any>
-//       return error.message;
-//     } else {
-//       console.log("unexpected error: ", error);
-//       return "An unexpected error occurred";
-//     }
-//   }
-// }
-// getPosts();
-/////////////////////////////////////////
 
 // getting a single post by id
 const getPost = async (req: Request, res: Response, next: NextFunction) => {
@@ -88,13 +50,41 @@ const getPost = async (req: Request, res: Response, next: NextFunction) => {
 
 const addPost = async (req: Request, res: Response) => {
   try {
-    let body: string = req.body;
+    let body: any = req.body;
 
-    const newUser = await User.create(body);
+    // get the post
+    let result: AxiosResponse = await axios.get(
+      `https://phonevalidation.abstractapi.com/v1/?api_key=${process.env.API_KEY}&phone=${body.phoneNumber}`
+    );
+    if (result.data.valid) {
+      const newUser = await User.create(body);
+      var response = res.status(200).json({
+        message: "the user is added sucessfully",
+        data: newUser
+      });
+      return response;
+    } else {
+      var response = res.status(400).json({
+        message: "the number is unvalid",
+      });
+      return response;
+    }
+    // let post: Post = result.data;
+    // return res.status(200).json({
+    //     message: post
+    // });
 
-    res.status(201).json(newUser);
+    // res.status(201).json(newUser);
   } catch (error) {
-    res.status(500).send(error);
+    // res.status(500).send(error);
+    if (axios.isAxiosError(error)) {
+      console.log("error message: ", error.message);
+      // 👇️ error: AxiosError<any, any>
+      return error.message;
+    } else {
+      console.log("unexpected error: ", error);
+      return "An unexpected error occurred";
+    }
   }
 };
 
