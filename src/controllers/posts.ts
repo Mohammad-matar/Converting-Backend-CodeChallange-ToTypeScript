@@ -14,17 +14,7 @@ interface Post {
 // getting all posts
 
 const getPosts = async (req: Request, res: Response, next: NextFunction) => {
-  // get some posts
-  // let result: AxiosResponse = await axios.get(
-  //   `https://jsonplaceholder.typicode.com/posts`
-  // );
-
-  // let posts: [Post] = result.data;
-  // return res.status(200).json({
-  //   message: posts,
-  // });
   var users = await User.find({});
-
   res.status(200).json({
     message: "get all users successfully",
     data: users,
@@ -51,13 +41,16 @@ const addPost = async (req: Request, res: Response) => {
 
     // get the post
     let result: AxiosResponse = await axios.get(
-      `https://phonevalidation.abstractapi.com/v1/?api_key=${process.env.API_KEY}&phone=${body.phoneNumber}`
+      `https://phonevalidation.abstractapi.com/v1/?api_key=${process.env.API_KEY}&phone=+${body?.phoneNumber}`
     );
+
+    console.log(result.data.valid);
+
     if (result.data.valid) {
       const newUser = await User.create(body);
       var response = res.status(200).json({
         message: "the user is added sucessfully",
-        data: newUser
+        data: newUser,
       });
       return response;
     } else {
@@ -78,7 +71,6 @@ const addPost = async (req: Request, res: Response) => {
     }
   }
 };
-
 
 // updating a post
 const updatePost = async (req: Request, res: Response, next: NextFunction) => {

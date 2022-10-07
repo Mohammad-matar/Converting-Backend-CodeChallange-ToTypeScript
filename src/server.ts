@@ -5,6 +5,7 @@ import morgan from "morgan";
 import routes from "./routes/posts";
 import mongoose from "mongoose";
 import "dotenv/config";
+import cors from "cors";
 
 mongoose
   .connect(`${process.env.DB_CONN_STRING}`)
@@ -14,7 +15,8 @@ mongoose
   .catch(console.error);
 
 const router: Express = express();
-
+//CORS
+router.use(cors());
 /** Logging */
 router.use(morgan("dev"));
 /** Parse the request */
